@@ -10,14 +10,15 @@ public class Lion extends Piece {
         super(color, LION, ELEPHANT);
     }
 
-    public Lion(Lion lion){
+    public Lion(Lion lion) {
         super(lion.getColor(), lion.getAnimalType(), lion.getFear());
     }
+
     public List<Position> getLegalPositions(Board board) {
         return null;
     }
 
-    public Lion clone(){
+    public Lion clone() {
         return new Lion(this);
     }
 }
