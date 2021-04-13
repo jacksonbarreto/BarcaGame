@@ -4,4 +4,5 @@ module BarcaGame {
 
     opens  view to javafx.fxml;
     exports view;
+    exports model;
 }
