@@ -6,16 +6,20 @@ import static model.AnimalType.*;
 
 public class Elephant extends Piece {
 
-    public Elephant(Color color) {
-        super(color, ELEPHANT, MOUSE);
+    public Elephant(Color color, Location location) {
+        super(color, ELEPHANT, MOUSE, location);
     }
 
     public Elephant(Elephant elephant) {
-        super(elephant.getColor(), elephant.getAnimalType(), elephant.getFear());
+        super(elephant.getColor(), elephant.getAnimalType(), elephant.getFear(), elephant.getLocation());
     }
 
-    public List<Position> getLegalPositions(Board board) {
-        return null;
+    public List<Position> getLegalPositions(Board boardGame) {
+        List<Position> legalPosition = getLinearPositions(boardGame, this);
+        legalPosition.addAll(getDiagonalPositions(boardGame,this));
+        removeFearPositions(legalPosition, boardGame, this);
+
+        return legalPosition;
     }
 
     public Elephant clone() {

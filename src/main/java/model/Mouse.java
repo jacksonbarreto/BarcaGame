@@ -7,16 +7,19 @@ import static model.AnimalType.*;
 public class Mouse extends Piece {
 
 
-    public Mouse(Color color) {
-        super(color, MOUSE, LION);
+    public Mouse(Color color, Location location) {
+        super(color, MOUSE, LION, location);
     }
 
     public Mouse(Mouse mouse) {
-        super(mouse.getColor(), mouse.getAnimalType(), mouse.getFear());
+        super(mouse.getColor(), mouse.getAnimalType(), mouse.getFear(), mouse.getLocation());
     }
 
-    public List<Position> getLegalPositions(Board board) {
-        return null;
+    public List<Position> getLegalPositions(Board boardGame) {
+        List<Position> legalPosition = getLinearPositions(boardGame, this);
+        removeFearPositions(legalPosition, boardGame, this);
+
+        return legalPosition;
     }
 
     public Mouse clone() {
