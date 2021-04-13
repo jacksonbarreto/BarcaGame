@@ -31,4 +31,12 @@ public class Location {
     public int hashCode() {
         return Objects.hash(row, column);
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "row=" + row +
+                ", column=" + column +
+                '}';
+    }
 }
