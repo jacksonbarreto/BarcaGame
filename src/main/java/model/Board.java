@@ -6,9 +6,9 @@ import java.util.*;
 import java.util.function.Predicate;
 
 import static model.Color.*;
-import static model.EGameStatus.WITHOUT_WINNERS;
+import static model.EGameStatus.*;
 import static model.EPositionType.*;
-import static model.Piece.removeFearPositions;
+//import static model.Piece.removeFearPositions;
 import static model.factories.PieceFactory.*;
 
 public class Board {
@@ -50,13 +50,28 @@ public class Board {
     }
 
     public EGameStatus getGameStatus() {
+        int blackPiecesInFountain = 0;
+        int blackWhiteInFountain = 0;
+        List<Position> fountains = getFountains();
 
-        return WITHOUT_WINNERS;
+        for (Position position : fountains) {
+            if (position.isOccupied() && position.getPieceOccupying().getColor() == BLACK) {
+                blackPiecesInFountain++;
+            } else if (position.isOccupied() && position.getPieceOccupying().getColor() == WHITE) {
+                blackWhiteInFountain++;
+            }
+        }
+
+        if (blackPiecesInFountain >= 3)
+            return BLACK_WINNER;
+        if (blackWhiteInFountain >= 3)
+            return WHITE_WINNER;
+        return GAMING;
     }
 
     //por boolean
     public void moveTo(Movement movement) {
-        if (isValidMovement(movement, this)) {
+        if (isValidMovement(movement)) {
             Position positionOrigin = this.board.get(movement.getOrigin().getRow()).get(movement.getOrigin().getColumn());
             Position positionDestination = this.board.get(movement.getDestination().getRow()).get(movement.getDestination().getColumn());
             Piece piece = positionOrigin.getPieceOccupying();
@@ -66,31 +81,31 @@ public class Board {
         }
     }
 
-    public static boolean isValidMovement(Movement movement, Board board) {
-        if ((movement.getOrigin().getRow() < 0 || movement.getOrigin().getRow() > board.rows - 1) ||
-                (movement.getOrigin().getColumn() < 0 || movement.getOrigin().getColumn() > board.columns - 1) ||
-                (movement.getDestination().getRow() < 0 || movement.getDestination().getRow() > board.rows - 1) ||
-                (movement.getDestination().getColumn() < 0 || movement.getDestination().getColumn() > board.columns - 1))
+    public boolean isValidMovement(Movement movement) {
+        if ((movement.getOrigin().getRow() < 0 || movement.getOrigin().getRow() > this.rows - 1) ||
+                (movement.getOrigin().getColumn() < 0 || movement.getOrigin().getColumn() > this.columns - 1) ||
+                (movement.getDestination().getRow() < 0 || movement.getDestination().getRow() > this.rows - 1) ||
+                (movement.getDestination().getColumn() < 0 || movement.getDestination().getColumn() > this.columns - 1))
             return false;
-        Position positionOrigin = board.getBoard().get(movement.getOrigin().getRow()).get(movement.getOrigin().getColumn());
-        Position positionDestination = board.getBoard().get(movement.getDestination().getRow()).get(movement.getDestination().getColumn());
+        Position positionOrigin = this.getBoard().get(movement.getOrigin().getRow()).get(movement.getOrigin().getColumn());
+        Position positionDestination = this.getBoard().get(movement.getDestination().getRow()).get(movement.getDestination().getColumn());
         if (!positionOrigin.isOccupied())
             return false;
         if (positionDestination.isOccupied())
             return false;
 
         Piece piece = positionOrigin.getPieceOccupying();
-        List<Position> legalPositionsWithoutFearfulPositions = removeFearPositions(piece.getLegalPositions(board), board, piece);
+        List<Position> legalPositionsWithoutFearfulPositions = removeFearPositions(piece.getLegalPositions(this), piece);
 
 
         if (legalPositionsWithoutFearfulPositions.isEmpty())
-            return piece.getLegalPositions(board).contains(positionDestination);
+            return piece.getLegalPositions(this).contains(positionDestination);
         else
             return legalPositionsWithoutFearfulPositions.contains(positionDestination);
     }
 
-    public List<Position> getPositionWithColorPieces(Color color){
-        Predicate<Position> isThatColor = (p)-> p.isOccupied() && p.getPieceOccupying().getColor() == color;
+    public List<Position> getPositionWithColorPieces(Color color) {
+        Predicate<Position> isThatColor = (p) -> p.isOccupied() && p.getPieceOccupying().getColor() == color;
         return getPositionMeets(isThatColor);
     }
 
@@ -98,6 +113,7 @@ public class Board {
         Predicate<Position> isFountain = (p) -> p.getPositionType() == FOUNTAIN;
         return getPositionMeets(isFountain);
     }
+
     private List<Position> getPositionMeets(Predicate<Position> predicate) {
         List<Position> positionsMatch = new ArrayList<>(TOTAL_PIECES);
 
@@ -125,17 +141,20 @@ public class Board {
         return columns;
     }
 
-    public List<Position> getFearPositions(List<Position> positions){
-        return getFearPositions(positions);
+    public List<Position> getFearPositions(List<Position> positions) {
+        return getFearPositions(positions, null);
     }
-    public List<Position> getFearPositions(List<Position> positions, Piece piece){
+
+    public List<Position> getFearPositions(List<Position> positions, Piece piece) {
         List<Position> fearPositions = new ArrayList<>();
         List<List<Position>> board = this.board;
-
+        boolean isNotRemoveFear = false;
+        if (piece == null)
+            isNotRemoveFear = true;
         for (Position currentPosition : positions) {
-            if (piece == null)
+            if (isNotRemoveFear) {
                 piece = currentPosition.getPieceOccupying();
-
+            }
             int row = currentPosition.getLocation().getRow();
             int column = currentPosition.getLocation().getColumn();
             int firstRow = 0;
@@ -226,8 +245,9 @@ public class Board {
         }
         return fearPositions;
     }
-    public List<Position>  removeFearPositions(List<Position> legalPosition, Piece piece) {
-        List<Position> positionsFear = getFearPositions(legalPosition,piece);
+
+    public List<Position> removeFearPositions(List<Position> legalPosition, Piece piece) {
+        List<Position> positionsFear = getFearPositions(legalPosition, piece);
         legalPosition.removeAll(positionsFear);
         return legalPosition;
     }
