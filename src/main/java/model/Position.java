@@ -41,7 +41,7 @@ public class Position {
     }
 
     public EPositionType getPositionType() {
-        return EPositionType;
+        return this.EPositionType;
     }
 
     public Color getPositionColor() {

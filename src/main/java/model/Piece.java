@@ -153,7 +153,113 @@ public abstract class Piece {
         }
         return legalPosition;
     }
+    public static List<Position> getFearPositions(List<Position> positions, Board boardGame){
+        return getFearPositions(positions,boardGame);
+    }
+    public static List<Position> getFearPositions(List<Position> positions, Board boardGame, Piece piece){
+        List<Position> fearPositions = new ArrayList<>();
+        List<List<Position>> board = boardGame.getBoard();
 
+        for (Position currentPosition : positions) {
+            if (piece == null)
+                piece = currentPosition.getPieceOccupying();
+
+            int row = currentPosition.getLocation().getRow();
+            int column = currentPosition.getLocation().getColumn();
+            int firstRow = 0;
+            int lastRow = boardGame.getRows();
+            int firsColumn = 0;
+            int lastColumn = boardGame.getColumns();
+            int rowNW = row - 1;
+            int rowSW = row + 1;
+            int rowNE = row - 1;
+            int rowSE = row + 1;
+            int columnNW = column - 1;
+            int columnSW = column - 1;
+            int columnNE = column + 1;
+            int columnSE = column + 1;
+            int rowN = row - 1;
+            int rowS = row + 1;
+            int columnW = column - 1;
+            int columnE = column + 1;
+
+            if (rowNW >= firstRow && columnNW >= firsColumn) {
+                if (board.get(rowNW).get(columnNW).isOccupied() && board.get(rowNW).get(columnNW).getPieceOccupying().getColor() != piece.getColor()) {
+                    if (board.get(rowNW).get(columnNW).getPieceOccupying().getAnimalType() == piece.getFear()) {
+                        fearPositions.add(currentPosition);
+                        continue;
+                    }
+
+                }
+            }
+
+            if (rowSW < lastRow && columnSW >= firsColumn) {
+                if (board.get(rowSW).get(columnSW).isOccupied() && board.get(rowSW).get(columnSW).getPieceOccupying().getColor() != piece.getColor()) {
+                    if (board.get(rowSW).get(columnSW).getPieceOccupying().getAnimalType() == piece.getFear()) {
+                        fearPositions.add(currentPosition);
+                        continue;
+                    }
+                }
+            }
+
+            if (rowSE < lastRow && columnSE < lastColumn) {
+                if (board.get(rowSE).get(columnSE).isOccupied() && board.get(rowSE).get(columnSE).getPieceOccupying().getColor() != piece.getColor()) {
+                    if (board.get(rowSE).get(columnSE).getPieceOccupying().getAnimalType() == piece.getFear()) {
+                        fearPositions.add(currentPosition);
+                        continue;
+                    }
+                }
+            }
+
+            if (rowNE >= firstRow && columnNE < lastColumn) {
+                if (board.get(rowNE).get(columnNE).isOccupied() && board.get(rowNE).get(columnNE).getPieceOccupying().getColor() != piece.getColor()) {
+                    if (board.get(rowNE).get(columnNE).getPieceOccupying().getAnimalType() == piece.getFear()) {
+                        fearPositions.add(currentPosition);
+                        continue;
+                    }
+                }
+            }
+
+            if (rowN >= firstRow) {
+                if (board.get(rowN).get(column).isOccupied() && board.get(rowN).get(column).getPieceOccupying().getColor() != piece.getColor()) {
+                    if (board.get(rowN).get(column).getPieceOccupying().getAnimalType() == piece.getFear()) {
+                        fearPositions.add(currentPosition);
+                        continue;
+                    }
+                }
+            }
+            if (rowS < lastRow) {
+                if (board.get(rowS).get(column).isOccupied() && board.get(rowS).get(column).getPieceOccupying().getColor() != piece.getColor()) {
+                    if (board.get(rowS).get(column).getPieceOccupying().getAnimalType() == piece.getFear()) {
+                        fearPositions.add(currentPosition);
+                        continue;
+                    }
+                }
+            }
+            if (columnW >= firsColumn) {
+                if (board.get(row).get(columnW).isOccupied() && board.get(row).get(columnW).getPieceOccupying().getColor() != piece.getColor()) {
+                    if (board.get(row).get(columnW).getPieceOccupying().getAnimalType() == piece.getFear()) {
+                        fearPositions.add(currentPosition);
+                        continue;
+                    }
+                }
+            }
+            if (columnE < lastColumn) {
+                if (board.get(row).get(columnE).isOccupied() && board.get(row).get(columnE).getPieceOccupying().getColor() != piece.getColor()) {
+                    if (board.get(row).get(columnE).getPieceOccupying().getAnimalType() == piece.getFear()) {
+                        fearPositions.add(currentPosition);
+                    }
+                }
+            }
+        }
+        return fearPositions;
+    }
+    public static List<Position>  removeFearPositions(List<Position> legalPosition, Board boardGame, Piece piece) {
+        List<Position> positionsFear = getFearPositions(legalPosition,boardGame,piece);
+        legalPosition.removeAll(positionsFear);
+        return legalPosition;
+    }
+/*
     public static void removeFearPositions(List<Position> legalPosition, Board boardGame, Piece piece) {
         List<List<Position>> board = boardGame.getBoard();
         Iterator<Position> it = legalPosition.iterator();
@@ -249,5 +355,7 @@ public abstract class Piece {
             }
         }
     }
+
+ */
 
 }
