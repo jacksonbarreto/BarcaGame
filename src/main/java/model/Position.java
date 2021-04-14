@@ -4,20 +4,20 @@ import java.util.Objects;
 
 public class Position {
     private final Location location;
-    private final PositionType positionType;
+    private final EPositionType EPositionType;
     private final Color positionColor;
     private int heuristicValue;
     private Piece pieceOccupying;
 
-    public Position(Location location, PositionType positionType, Color positionColor) {
+    public Position(Location location, EPositionType EPositionType, Color positionColor) {
         this.location = location;
-        this.positionType = positionType;
+        this.EPositionType = EPositionType;
         this.positionColor = positionColor;
     }
 
     private Position(Position position){
         this.location = position.location;
-        this.positionType = position.positionType;
+        this.EPositionType = position.EPositionType;
         this.positionColor = position.positionColor;
         this.heuristicValue = position.heuristicValue;
         this.pieceOccupying = position.pieceOccupying;
@@ -40,8 +40,8 @@ public class Position {
         return pieceOccupying.clone();
     }
 
-    public PositionType getPositionType() {
-        return positionType;
+    public EPositionType getPositionType() {
+        return EPositionType;
     }
 
     public Color getPositionColor() {
@@ -71,5 +71,12 @@ public class Position {
     @Override
     public int hashCode() {
         return Objects.hash(location);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "location=" + location +
+                '}';
     }
 }

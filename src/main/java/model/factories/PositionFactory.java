@@ -4,7 +4,7 @@ import model.Color;
 import model.Location;
 import model.Position;
 
-import static model.PositionType.*;
+import static model.EPositionType.*;
 
 public class PositionFactory {
 
