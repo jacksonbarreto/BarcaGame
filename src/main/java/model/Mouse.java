@@ -2,7 +2,7 @@ package model;
 
 import java.util.List;
 
-import static model.AnimalType.*;
+import static model.EAnimalType.*;
 
 public class Mouse extends Piece {
 
@@ -16,10 +16,7 @@ public class Mouse extends Piece {
     }
 
     public List<Position> getLegalPositions(Board boardGame) {
-        List<Position> legalPosition = getLinearPositions(boardGame, this);
-        removeFearPositions(legalPosition, boardGame, this);
-
-        return legalPosition;
+        return getLinearPositions(boardGame, this);
     }
 
     public Mouse clone() {

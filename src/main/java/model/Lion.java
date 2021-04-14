@@ -1,10 +1,8 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import static model.AnimalType.*;
+import static model.EAnimalType.*;
 
 public class Lion extends Piece {
 
@@ -17,10 +15,7 @@ public class Lion extends Piece {
     }
 
     public List<Position> getLegalPositions(Board boardGame) {
-        List<Position> legalPosition = getDiagonalPositions(boardGame, this);
-        removeFearPositions(legalPosition, boardGame, this);
-
-        return legalPosition;
+        return getDiagonalPositions(boardGame, this);
     }
 
 

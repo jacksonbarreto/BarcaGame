@@ -2,7 +2,7 @@ package model;
 
 import java.util.List;
 
-import static model.AnimalType.*;
+import static model.EAnimalType.*;
 
 public class Elephant extends Piece {
 
@@ -16,8 +16,7 @@ public class Elephant extends Piece {
 
     public List<Position> getLegalPositions(Board boardGame) {
         List<Position> legalPosition = getLinearPositions(boardGame, this);
-        legalPosition.addAll(getDiagonalPositions(boardGame,this));
-        removeFearPositions(legalPosition, boardGame, this);
+        legalPosition.addAll(getDiagonalPositions(boardGame, this));
 
         return legalPosition;
     }
