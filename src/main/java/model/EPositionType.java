@@ -1,5 +1,5 @@
 package model;
 
-public enum PositionType {
+public enum EPositionType {
     FOUNTAIN, COMMON
 }

@@ -1,6 +1,6 @@
 package model;
 
 
-public enum AnimalType {
+public enum EAnimalType {
     LION, ELEPHANT, MOUSE
 }
