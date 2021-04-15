@@ -7,7 +7,7 @@ public class Position {
     private final EPositionType EPositionType;
     private final Color positionColor;
     private int heuristicValue;
-    private Piece pieceOccupying;
+    private IPiece pieceOccupying;
 
     public Position(Location location, EPositionType EPositionType, Color positionColor) {
         this.location = location;
@@ -27,14 +27,14 @@ public class Position {
         return this.pieceOccupying != null;
     }
 
-    public void setPiece(Piece piece){
+    public void setPiece(IPiece piece){
         this.pieceOccupying = piece.clone();
     }
     public void dump(){
         this.pieceOccupying = null;
     }
 
-    public Piece getPieceOccupying() {
+    public IPiece getPieceOccupying() {
         if (this.pieceOccupying == null)
             return null;
         return pieceOccupying.clone();

@@ -74,7 +74,7 @@ public class Board {
         if (isValidMovement(movement)) {
             Position positionOrigin = this.board.get(movement.getOrigin().getRow()).get(movement.getOrigin().getColumn());
             Position positionDestination = this.board.get(movement.getDestination().getRow()).get(movement.getDestination().getColumn());
-            Piece piece = positionOrigin.getPieceOccupying();
+            IPiece piece = positionOrigin.getPieceOccupying();
             piece.setLocation(new Location(movement.getDestination().getRow(), movement.getDestination().getColumn()));
             positionDestination.setPiece(piece);
             positionOrigin.dump();
@@ -94,7 +94,7 @@ public class Board {
         if (positionDestination.isOccupied())
             return false;
 
-        Piece piece = positionOrigin.getPieceOccupying();
+        IPiece piece = positionOrigin.getPieceOccupying();
         List<Position> legalPositionsWithoutFearfulPositions = removeFearPositions(piece.getLegalPositions(this), piece);
 
 
@@ -145,12 +145,10 @@ public class Board {
         return getFearPositions(positions, null);
     }
 
-    public List<Position> getFearPositions(List<Position> positions, Piece piece) {
+    public List<Position> getFearPositions(List<Position> positions, IPiece piece) {
         List<Position> fearPositions = new ArrayList<>();
         List<List<Position>> board = this.board;
-        boolean isNotRemoveFear = false;
-        if (piece == null)
-            isNotRemoveFear = true;
+        boolean isNotRemoveFear = piece == null;
         for (Position currentPosition : positions) {
             if (isNotRemoveFear) {
                 piece = currentPosition.getPieceOccupying();
@@ -246,7 +244,7 @@ public class Board {
         return fearPositions;
     }
 
-    public List<Position> removeFearPositions(List<Position> legalPosition, Piece piece) {
+    public List<Position> removeFearPositions(List<Position> legalPosition, IPiece piece) {
         List<Position> positionsFear = getFearPositions(legalPosition, piece);
         legalPosition.removeAll(positionsFear);
         return legalPosition;
