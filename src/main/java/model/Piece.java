@@ -38,6 +38,6 @@ public abstract class Piece implements IPiece {
 
     public abstract List<Position> getLegalPositions(Board boardGame);
 
-    public abstract Piece clone();
+    public abstract IPiece clone();
 
 }
