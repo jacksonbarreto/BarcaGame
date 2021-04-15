@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 import static model.EAnimalType.*;
+import static model.IPiece.*;
 
 public class Elephant extends Piece {
 
