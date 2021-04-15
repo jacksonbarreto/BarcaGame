@@ -153,6 +153,7 @@ public abstract class Piece {
         }
         return legalPosition;
     }
+    /*
     public static List<Position> getFearPositions(List<Position> positions, Board boardGame){
         return getFearPositions(positions,boardGame);
     }
