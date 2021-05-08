@@ -94,6 +94,6 @@ public class PlayerMinMax extends Player {
             if (board.getFountains().contains(position))
                 value++;
         }
-        return maximize ? value : value * (-1);
+        return value;
     }
 }
