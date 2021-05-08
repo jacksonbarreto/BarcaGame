@@ -45,6 +45,18 @@ public class Board {
         loadPieces();
     }
 
+    private Board (Board board){
+        this.rows = board.rows;
+        this.columns = board.columns;
+        this.board = board.copyBoard();
+    }
+
+    public Board clone(){
+        return new Board(this);
+    }
+
+    public static Board createBoard(){return new Board();}
+
     public List<List<Position>> getBoard() {
         return copyBoard();
     }
