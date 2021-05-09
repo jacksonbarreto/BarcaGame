@@ -16,7 +16,7 @@ public class GameController {
     private Board board;
     private final List<IPlayer> players;
 
-    public GameController(Player player1, Player player2, int playLimit) {
+    public GameController(IPlayer player1, IPlayer player2, int playLimit) {
         if (player1 == null || player2 == null || playLimit <= 10)
             throw new IllegalArgumentException();
         if (player1.getColor() == player2.getColor())
@@ -47,21 +47,17 @@ public class GameController {
 
 
     public EGameStatus startGame() {
-        //System.out.println("Jogo Iniciado");
-        //System.out.println("Primeiro Jogador: " + getCurrentPlayer());
         this.turnsCount = 0;
         this.currentPlayer = drawFirstPlayer();
         this.board = createBoard();
         do {
             Movement movement = players.get(this.currentPlayer).getMove(getBoard());
-          //  System.out.println("turno: "+ turnsCount + " | " +getCurrentPlayer()+" :: Movimento: " + movement);
             this.board.moveTo(movement);
             changeTurn();
         } while (board.getGameStatus() == GAMING && this.turnsCount < this.playLimit);
 
-        //chama tela de resultado da interface
+        //chama tela de resultado da interface (que podíamos receber no construtor)
         return this.board.getGameStatus();
-        //System.out.println("Resultado: " + this.board.getGameStatus());
     }
 
 

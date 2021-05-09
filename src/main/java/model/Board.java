@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 import static model.Color.*;
 import static model.EGameStatus.*;
 import static model.EPositionType.*;
-//import static model.Piece.removeFearPositions;
 import static model.factories.PieceFactory.*;
 
 public class Board {
@@ -45,17 +44,19 @@ public class Board {
         loadPieces();
     }
 
-    private Board (Board board){
+    private Board(Board board) {
         this.rows = board.rows;
         this.columns = board.columns;
         this.board = board.copyBoard();
     }
 
-    public Board clone(){
+    public Board clone() {
         return new Board(this);
     }
 
-    public static Board createBoard(){return new Board();}
+    public static Board createBoard() {
+        return new Board();
+    }
 
     public List<List<Position>> getBoard() {
         return copyBoard();
@@ -94,6 +95,8 @@ public class Board {
     }
 
     public boolean isValidMovement(Movement movement) {
+        if (movement == null)
+            return false;
         if ((movement.getOrigin().getRow() < 0 || movement.getOrigin().getRow() > this.rows - 1) ||
                 (movement.getOrigin().getColumn() < 0 || movement.getOrigin().getColumn() > this.columns - 1) ||
                 (movement.getDestination().getRow() < 0 || movement.getDestination().getRow() > this.rows - 1) ||
