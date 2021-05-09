@@ -12,17 +12,17 @@ import static model.EGameStatus.*;
 public class GameController {
     private int turnsCount;
     private int currentPlayer;
-    private final int playLimit;
+    private final int turnsLimit;
     private Board board;
     private final List<IPlayer> players;
 
-    public GameController(IPlayer player1, IPlayer player2, int playLimit) {
-        if (player1 == null || player2 == null || playLimit <= 10)
+    public GameController(IPlayer player1, IPlayer player2, int turnsLimit) {
+        if (player1 == null || player2 == null || turnsLimit <= 10)
             throw new IllegalArgumentException();
         if (player1.getColor() == player2.getColor())
             throw new IllegalArgumentException();
 
-        this.playLimit = playLimit;
+        this.turnsLimit = turnsLimit;
         this.turnsCount = 0;
         this.currentPlayer = drawFirstPlayer();
         this.players = new ArrayList<>(Arrays.asList(player1, player2));
@@ -54,7 +54,7 @@ public class GameController {
             Movement movement = players.get(this.currentPlayer).getMove(getBoard());
             this.board.moveTo(movement);
             changeTurn();
-        } while (board.getGameStatus() == GAMING && this.turnsCount < this.playLimit);
+        } while (board.getGameStatus() == GAMING && this.turnsCount < this.turnsLimit);
 
         //chama tela de resultado da interface (que podíamos receber no construtor)
         return this.board.getGameStatus();
